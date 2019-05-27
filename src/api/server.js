@@ -5,7 +5,7 @@ const SERVER = {
      * 查询指定目录的key列表
      */
     GetMemberList() {
-        return axios.get(`/v1/members`);
+        return axios.get(`/v1/keys/members`);
     },
 
     /**
@@ -18,8 +18,11 @@ const SERVER = {
     /**
      * 修复etcd key目录结构
      */
-    RestoreEtcdServer(){
-        return axios.get(`/v1/restore`);
+    RestoreEtcdServer(id){
+        if (!id){
+            return
+        }
+        return axios.get(`/v1/server/restore?etcd_id=${id}`);
     }
 
 }

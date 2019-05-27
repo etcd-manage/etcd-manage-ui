@@ -1,13 +1,13 @@
 <template>
   <div class="kv-grid">
     <div v-for="(item,key) in list" :key="key" class="key-list" @click="checkKey(item)">
-      <Checkbox class="checkbox" v-model="item.check"></Checkbox>
-      <Tooltip :content="item.full_dir" placement="top" transfer>
+      <Checkbox class="checkbox" v-model="item.check" v-if="item.is_dir==false"></Checkbox>
+      <Tooltip :content="item.path" placement="top" transfer>
         <div @click.stop="openKey(item)">
           <img v-if="item.is_dir==false" src="../assets/imgs/file.png" alt="file" class="key-icon">
           <img v-if="item.is_dir==true" src="../assets/imgs/folder.png" alt="file" class="key-icon">
         </div>
-        <div class="title">{{item.value}}</div>
+        <div class="title">{{item.name}}</div>
       </Tooltip>
     </div>
   </div>

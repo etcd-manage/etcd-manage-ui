@@ -6,7 +6,7 @@ const KV = {
      * @param {string} dir 查询key的目录
      */
     GetKeyList(dir) {
-        return axios.get(`/v1/list?key=${dir}`);
+        return axios.get(`/v1/keys?path=${dir}`);
     },
 
     /**
@@ -14,7 +14,7 @@ const KV = {
      * @param {string} dir 
      */
     GetKeyInfo(dir) {
-        return axios.get(`/v1/key?key=${dir}`)
+        return axios.get(`/v1/keys/val?path=${dir}`)
     },
 
     /**
@@ -22,7 +22,7 @@ const KV = {
      * @param {*} data 添加keybody信息
      */
     AddKey(data){
-        return axios.post('/v1/key', data)
+        return axios.post('/v1/keys', data)
     },
 
     /**
@@ -30,7 +30,7 @@ const KV = {
      * @param {} data 修改时的body
      */
     SaveKey(data){
-        return axios.put(`/v1/key`, data)
+        return axios.put(`/v1/keys`, data)
     },
 
     /**
@@ -38,7 +38,7 @@ const KV = {
      * @param {string} dir 要删除的key
      */
     DelKey(dir){
-        return axios.delete(`/v1/key?key=${dir}`)
+        return axios.delete(`/v1/keys?path=${dir}`)
     }
 }
 

@@ -22,8 +22,8 @@ axios.interceptors.request.use(
             console.log(config);
         }
         // etcd服务
-        let etcdSelectName = localStorage.getItem('etcd-name') || ''; // 读取当前选中的etcd server
-        config.headers.EtcdServerName = etcdSelectName;
+        let etcdID = localStorage.getItem('EtcdID') || ''; // 读取当前选中的etcd server
+        config.headers.EtcdID = etcdID;
         iView.LoadingBar.start();
         return config
     },

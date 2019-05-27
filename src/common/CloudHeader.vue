@@ -6,7 +6,7 @@
     </div>
     <div class="server" @mouseenter="hover(1, 1)" @mouseleave="hover(1, 2)">
       <Dropdown trigger="click" style="margin-left: 20px" @on-click="onEtcdServer">
-        <span>{{etcdSelectName}}
+        <span>{{EtcdName}}
           <Icon type="ios-arrow-down"></Icon>
         </span>
         <DropdownMenu slot="list">
@@ -14,8 +14,8 @@
             v-for="(item, index) in etcdServers"
             :key="index"
             :divided="index > 0"
-            :name="item.Name"
-          >{{ item.Name }}</DropdownItem>
+            :name="item.id"
+          >{{ item.name }}</DropdownItem>
         </DropdownMenu>
       </Dropdown>
     </div>
@@ -57,7 +57,9 @@ export default {
       showLang: "Lang",
       lang: "en",
       etcdServers: [], // etcd 服务列表
-      etcdSelectName: '', // 选中的etcd server
+      EtcdID: '', // 选中的etcd server id
+      EtcdName: '', // 选中的etcd server name
+
     };
   },
   methods: {
@@ -117,23 +119,27 @@ export default {
     getEtcdServers() {
       SERVER.GetEtcdServerList().then(response => {
         this.etcdServers = response.data || [];
-        if(this.etcdSelectName == '' && this.etcdServers.length > 0){
-          this.etcdSelectName = this.etcdServers[0].Name;
+        if(this.EtcdName == '' && this.etcdServers.length > 0){
+          this.EtcdName = this.etcdServers[0].name;
+          localStorage.setItem("EtcdID", this.etcdServers[0].id);
+          localStorage.setItem("EtcdName", this.etcdServers[0].name);
         }
       });
     },
 
     // 选择etcd服务
-    onEtcdServer(name) {
-      this.etcdSelectName = name;
-      localStorage.setItem("etcd-name", name);
+    onEtcdServer(etcdId) {
+      localStorage.setItem("EtcdID", etcdId);
       let item = {};
       this.etcdServers.forEach(val => {
-        if(val.Name == name){
+        if(val.id == etcdId){
           item = val;
+          this.EtcdName = val.name;
+          localStorage.setItem("EtcdID", val.id);
+          localStorage.setItem("EtcdName", val.name);
         }
       });
-      console.log(name);
+      console.log(item);
       bus.$emit('etcd-server-selected', item);
     }
 
@@ -148,7 +154,7 @@ export default {
   },
   created() {
     let lang = localStorage.getItem("etcd-language") || "en";
-    this.etcdSelectName = localStorage.getItem('etcd-name') || '';
+    this.EtcdName = localStorage.getItem('EtcdName') || '请选择';
     this.changeLanguage(lang);
   }
 };

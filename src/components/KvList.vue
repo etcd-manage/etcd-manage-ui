@@ -53,12 +53,12 @@ export default {
           }
         },
         {
-          title: "NAME",
-          key: "value"
+          title: "Name",
+          key: "name"
         },
         {
           title: "KEY",
-          key: "full_dir"
+          key: "path"
         },
         {
           title: "Version",
@@ -94,11 +94,14 @@ export default {
                 {
                   props: {
                     confirm: true,
-                    title: this.$t("public.confirmDelete")
+                    title: this.$t("public.confirmDelete"),
+                  },
+                  style:{
+                    display: params.row.is_dir == true ? 'none' : 'inline'
                   },
                   on: {
                     "on-ok": () => {
-                      this.delOneKey(params.row.full_dir);
+                      this.delOneKey(params.row.path);
                     }
                   }
                 },

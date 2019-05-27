@@ -4,7 +4,7 @@
       <div class="breadcrumb-left">
         <Breadcrumb>
           <BreadcrumbItem v-for="(item, key) in breadcrumb" :key="key">
-            <Icon type="ios-home-outline" v-if="key == 0" @click="openByBreadcrumb(key)"></Icon>
+            <Icon type="ios-home-outline" v-if="key == 0" @click="openByBreadcrumb(-1)"></Icon>
             <span @click="openByBreadcrumb(key)">{{ item || '/' }}</span>
           </BreadcrumbItem>
         </Breadcrumb>
@@ -50,7 +50,7 @@
     <Drawer :width="60" v-model="showKeyInfoModel" :title="$t('key.editKey')">
       <Form :model="showKeyInfo" :label-width="80">
         <FormItem label="Key" prop="key">
-          <Input v-model="showKeyInfo.full_dir" disabled placeholder="key"></Input>
+          <Input v-model="showKeyInfo.path" disabled placeholder="key"></Input>
         </FormItem>
         <FormItem label="Version" prop="version">
           <Input v-model="showKeyInfo.version" disabled placeholder="Version"></Input>
@@ -87,6 +87,7 @@
 
         <FormItem label="Value" prop="value" v-show="addKeyInfo.kType == 'KEY'">
           <codemirror
+          v-show="addKeyInfo.kType == 'KEY'"
             v-model="addKeyInfo.value"
             ref="addEditor"
             :options="cmOption"
@@ -116,7 +117,7 @@ export default {
   },
   data() {
     return {
-      breadcrumb: [], // 面包线
+      breadcrumb: [''], // 面包线
       listType: "grid", // 显示方式
       showSplit: 0.15, // 分隔面板比例
       screenHeight: document.documentElement.clientHeight, // 屏幕高度
@@ -127,7 +128,7 @@ export default {
           title: "parent",
           loading: false,
           children: [],
-          full_dir: "/", // 默认前缀
+          path: "/", // 默认前缀
           render: (h, { root, node, data }) => {
             return h(
               "span",
@@ -137,7 +138,7 @@ export default {
                 },
                 on: {
                   click: () => {
-                    this.getList(data.full_dir);
+                    this.getList(data.path);
                   }
                 }
               },
@@ -158,7 +159,7 @@ export default {
       ], // 树形
 
       // 当前展示key的完整路径
-      fullDir: "",
+      fullDir: "/",
 
       // 编辑弹框
       showKeyInfoModel: false, // 查看弹框
@@ -183,7 +184,7 @@ export default {
   },
   mounted() {
     // 获取列表
-    this.getList("/");
+    this.getList("");
     // this.getRootTree("/");
     // 编辑器高度
     this.$refs.addEditor.codemirror.setSize("auto", "60vh");
@@ -210,7 +211,11 @@ export default {
       if (typeof dir == "undefined") {
         dir = "/"; // todo 需要换成前缀
       }
-      this.fullDir = dir || this.fullDir;
+      if (dir === ''){
+        this.fullDir = dir
+      }else{
+        this.fullDir = dir || this.fullDir;
+      }
       if (this.listType == "grid") {
         this.$refs.grid.getList(dir);
       } else if (this.listType == "list") {
@@ -222,7 +227,10 @@ export default {
     openByBreadcrumb(index) {
       index = index || 0;
       let dir = "";
-      if (index == 0) {
+      if (index == -1) {
+        dir = '';
+        this.breadcrumb = [''];
+      } else if (index == 0) {
         dir = this.breadcrumb[0] || "/";
       } else {
         let paths = [];
@@ -241,12 +249,12 @@ export default {
     openKey(item) {
       console.log(item);
       if (item.is_dir == false) {
-        KV.GetKeyInfo(item.full_dir).then(response => {
+        KV.GetKeyInfo(item.path).then(response => {
           this.showKeyInfo = response.data;
           this.showKeyInfoModel = true;
         });
       } else {
-        this.getList(item.full_dir);
+        this.getList(item.path);
       }
     },
 
@@ -264,10 +272,12 @@ export default {
         return;
       }
       selected.forEach((val, index) => {
-        // console.log(val._checked);
-        this.delOneKey(val.full_dir);
+        KV.DelKey(val.path).then(response => {
+        });
       });
+      console.log(this.fullDir);
       this.$refs.grid.clearSelected();
+      this.getList(this.fullDir);
     },
 
     // 删除一个值
@@ -309,7 +319,7 @@ export default {
       }
       // 请求参数
       let postData = {
-        full_dir: fullDir + "/" + this.addKeyInfo.key,
+        path: fullDir + "/" + this.addKeyInfo.key,
         is_dir: this.addKeyInfo.kType == "DIR",
         value: this.addKeyInfo.value
       };
@@ -337,11 +347,11 @@ export default {
     // 左侧树形加载
     loadTreeData(item, callback) {
       // console.log(item)
-      KV.GetKeyList(item.full_dir).then(response => {
+      KV.GetKeyList(item.path).then(response => {
         let list = [];
         response.data.forEach(val => {
           if (val.is_dir == true) {
-            val.title = val.value;
+            val.title = val.name;
             val.loading = false;
             val.children = [];
             list.push(val);
@@ -359,7 +369,7 @@ export default {
     // 点击树形节点
     onTree(list, item) {
       console.log(item);
-      this.getList(item.full_dir);
+      this.getList(item.path);
     },
 
     // 面板拖动
@@ -390,8 +400,8 @@ export default {
   watch: {
     fullDir(newFullDir) {
       console.log(newFullDir);
-      if (newFullDir == "/") {
-        this.breadcrumb = [""];
+      if (newFullDir == '/' || newFullDir == '') {
+        this.breadcrumb = [newFullDir];
       } else {
         this.breadcrumb = newFullDir.split("/");
       }

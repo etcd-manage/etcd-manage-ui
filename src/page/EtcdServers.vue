@@ -18,24 +18,28 @@ export default {
             pageSize:10,
             columns:[
                 {
-                    title: 'Title',
-                    key: 'Title'
+                    title: 'ID',
+                    key: 'id'
                 },
                 {
                     title: 'Name',
-                    key: 'Name'
+                    key: 'name'
                 },
                 {
                     title: 'Address',
-                    key: 'Address'
+                    key: 'address'
                 },
                 {
-                    title: 'Roles',
-                    key: 'Roles'
+                    title: 'Version',
+                    key: 'version'
+                },
+                {
+                    title: 'Tls enable',
+                    key: 'tls_enable'
                 },
                 {
                     title: 'Desc',
-                    key: 'Desc'
+                    key: 'desc'
                 },
                 {
                     title: 'Action',
@@ -97,8 +101,8 @@ export default {
 
         // 修复该服务目录问题
         restore(row){
-            // console.log(row)
-            SERVER.RestoreEtcdServer().then(response=>{
+            console.log(row)
+            SERVER.RestoreEtcdServer(row.id).then(response=>{
                 if(response.status == 200){
                     this.$Message.info('OK');
                 }
