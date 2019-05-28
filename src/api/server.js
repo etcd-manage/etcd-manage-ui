@@ -16,6 +16,14 @@ const SERVER = {
     },
 
     /**
+     * 添加
+     * @param {Object} info 添加详情
+     */
+    AddEtcdServer(info){
+        return axios.post(`/v1/server`, info);
+    },
+
+    /**
      * 修复etcd key目录结构
      */
     RestoreEtcdServer(id){
