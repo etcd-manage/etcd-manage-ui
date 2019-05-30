@@ -11,8 +11,9 @@ const SERVER = {
     /**
      * 获取所有etcd服务列表
      */
-    GetEtcdServerList(){
-        return axios.get(`/v1/server`);
+    GetEtcdServerList(name){
+        name = name || '';
+        return axios.get(`/v1/server?name=${name}`);
     },
 
     /**
@@ -21,6 +22,14 @@ const SERVER = {
      */
     AddEtcdServer(info){
         return axios.post(`/v1/server`, info);
+    },
+
+    /**
+     * 修改
+     * @param {Object} edit 修改详情
+     */
+    UpdateEtcdServer(edit){
+        return axios.put(`/v1/server`, edit);
     },
 
     /**

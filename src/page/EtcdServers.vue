@@ -7,7 +7,7 @@
                 <div class="search-form">
                     <Form :model="search" inline>
                         <FormItem label="服务器名:" :label-width="80">
-                            <Input v-model="search.name" placeholder="请输入服务器名..." style="width:200px;"/>
+                            <Input v-model="search.name" @on-enter="getList" placeholder="请输入服务器名..." style="width:200px;"/>
                         </FormItem>
                         <FormItem>
                             <Button type="primary" @click="getList">搜索</Button>
@@ -26,7 +26,7 @@
         </Card>
 
         <!-- 添加 -->
-        <Modal v-model="modalAdd" title="添加" @on-ok="addOk">
+        <Modal v-model="modalAdd" :title="$t('public.add')" @on-ok="addOk">
             <Form :model="info" label-position="right" :label-width="100">
             <FormItem label="服务名:">
                 <Input v-model="info.name" placeholder="请输入etcd服务名..."/>
@@ -84,6 +84,67 @@
             </Form>
         </Modal>
         <!-- end 添加 -->
+
+        <!-- 修改 -->
+        <Modal v-model="modalEdit" :title="$t('public.edit')" @on-ok="editOk">
+            <Form :model="edit" label-position="right" :label-width="100">
+            <FormItem label="服务名:">
+                <Input v-model="edit.name" placeholder="请输入etcd服务名..."/>
+            </FormItem>
+            <FormItem label="地址:">
+                <Poptip trigger="focus" >
+                    <Input v-model="edit.address" placeholder="请输入地址，多个逗号分开..." style="width:388px"/>
+                    <div slot="content">{{ edit.address }}</div>
+                </Poptip>
+            </FormItem>
+            <FormItem label="版本:">
+                <Select v-model="edit.version" style="width:200px">
+                    <Option value="v3"> V3 </Option>
+                    <Option value="v2"> V2 </Option>
+                </Select>
+            </FormItem>
+            <FormItem label="前缀:">
+                <Input v-model="edit.prefix" placeholder="请输入key前缀，建议不为空..."/>
+            </FormItem>
+            <FormItem label="用户名:">
+                <Input v-model="edit.username" placeholder="请输入用户名..."/>
+            </FormItem>
+            <FormItem label="密码:">
+                <Input v-model="edit.password" placeholder="请输入密码..."/>
+            </FormItem>
+            <FormItem label="TLS连接:">
+                <Select v-model="edit.tls_enable" style="width:200px">
+                    <Option value="false"> 否 </Option>
+                    <Option value="true"> 是 </Option>
+                </Select>
+            </FormItem>
+            <FormItem label="cert:" v-show="edit.tls_enable == 'true'">
+                <Upload action="//jsonplaceholder.typicode.com/posts/" name="file" @on-success="uploadSuccessCert">
+                    <Button icon="ios-cloud-upload-outline">Upload files</Button>
+                </Upload>
+            </FormItem>
+            <FormItem label="key:" v-show="edit.tls_enable == 'true'">
+                <Upload action="//jsonplaceholder.typicode.com/posts/" name="file" @on-success="uploadSuccessKey">
+                    <Button icon="ios-cloud-upload-outline">Upload files</Button>
+                </Upload>
+            </FormItem>
+            <FormItem label="ca:" v-show="edit.tls_enable == 'true'">
+                <Upload action="//jsonplaceholder.typicode.com/posts/" name="file" @on-success="uploadSuccessCa">
+                    <Button icon="ios-cloud-upload-outline">Upload files</Button>
+                </Upload>
+            </FormItem>
+            <FormItem label="备注:">
+                <Input
+                v-model="edit.desc"
+                type="textarea"
+                :autosize="{minRows: 2,maxRows: 5}"
+                placeholder="请输入备注..."
+                />
+            </FormItem>
+            </Form>
+        </Modal>
+        <!-- end 修改 -->
+
     </div>
 </template>
 <script>
@@ -123,7 +184,7 @@ export default {
                 {
                     title: 'Action',
                     key: 'action',
-                    width: 150,
+                    width: 260,
                     align: 'center',
                     render: (h, params) => {
                         return h('div', [
@@ -147,7 +208,21 @@ export default {
                                         marginRight: '5px'
                                     }
                                 }, this.$t('etcdServer.repairDirectory')),
-                            ])
+                            ]),
+                            h('Button', {
+                                props: {
+                                    type: 'primary',
+                                    size: 'small'
+                                },
+                                style: {
+                                    marginRight: '5px'
+                                },
+                                on: {
+                                    click: () => {
+                                        this.modify(params.row);
+                                    }
+                                }
+                            }, this.$t('public.edit')),
                         ]);
                     }
                 }
@@ -159,11 +234,14 @@ export default {
 
             modalAdd: false, // 是否显示添加弹框
             info: {}, // 添加对象
+
+            modalEdit: false, // 修改弹框
+            edit: {}, // 修改对象
         }
     },
     methods:{
         getList(){
-            SERVER.GetEtcdServerList().then(response => {
+            SERVER.GetEtcdServerList(this.search.name).then(response => {
                 console.log(response);
                 this.data = response.data || [];
                 this.changeListPage(this.page);
@@ -217,6 +295,23 @@ export default {
         uploadSuccessCa(response, file){
 
         },
+
+        // 修改
+        modify(row){
+            // console.log(row)
+            this.modalEdit = true;
+            this.edit = row;
+        },
+
+        // 修改确定
+        editOk(){
+            SERVER.UpdateEtcdServer(this.edit).then(response => {
+                if(response.status == 200){
+                    this.$Message.info('修改成功');
+                    this.getList();
+                }
+            });
+        }
 
 
     },

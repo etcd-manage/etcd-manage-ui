@@ -1,6 +1,8 @@
 <template>
   <div class="members">
-    <Table border :columns="columns" :data="list"></Table>
+    <Card>
+      <Table border :columns="columns" :data="list"></Table>
+    </Card>
   </div>
 </template>
 

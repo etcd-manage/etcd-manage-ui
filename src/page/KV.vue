@@ -79,21 +79,22 @@
           </Input>
         </FormItem>
         <FormItem label="KeyType" prop="kType">
-          <RadioGroup v-model="addKeyInfo.kType">
+          <RadioGroup v-model="addKeyInfo.kType" @on-change="changeKeyType">
             <Radio label="KEY"></Radio>
             <Radio label="DIR"></Radio>
           </RadioGroup>
         </FormItem>
+        <div v-show="addKeyInfoType == 'KEY'">
+          <FormItem label="Value" prop="value">
+            <codemirror
+              v-model="addKeyInfo.value"
+              ref="addEditor"
+              :options="cmOption"
+              style="line-height:20px;border: 1px solid #dcdee2;"
+            ></codemirror>
+          </FormItem>
+        </div>
 
-        <FormItem label="Value" prop="value" v-show="addKeyInfo.kType == 'KEY'">
-          <codemirror
-          v-show="addKeyInfo.kType == 'KEY'"
-            v-model="addKeyInfo.value"
-            ref="addEditor"
-            :options="cmOption"
-            style="line-height:20px;border: 1px solid #dcdee2;"
-          ></codemirror>
-        </FormItem>
 
         <FormItem>
           <Button @click="addKey" type="primary">{{$t('public.save')}}</Button>
@@ -168,6 +169,7 @@ export default {
       // 添加编辑
       addKeyInfoModel: false, // 添加弹框
       addKeyInfo: {}, // 添加详细信息
+      addKeyInfoType: 'KEY',
 
       // 代码编辑器配置
       cmOption: {
@@ -301,6 +303,12 @@ export default {
       });
     },
 
+    changeKeyType(val){
+      this.addKeyInfo.kType = val;
+      this.addKeyInfoType = val;
+      // console.log(val);
+    },
+
     // 添加事件
     // 添加key
     addKey() {
@@ -314,12 +322,12 @@ export default {
       console.log(this.addKeyInfo);
 
       let fullDir = this.fullDir;
-      if (fullDir == "/") {
-        fullDir = "";
-      }
+      // if (fullDir == "/") {
+      //   fullDir = "";
+      // }
       // 请求参数
       let postData = {
-        path: fullDir + "/" + this.addKeyInfo.key,
+        path: fullDir + this.addKeyInfo.key,
         is_dir: this.addKeyInfo.kType == "DIR",
         value: this.addKeyInfo.value
       };
