@@ -12,8 +12,8 @@
   "dependencies": {
     "axios": "^0.18.0",
     "iview": "^3.2.2",
+    "monaco-editor": "^0.17.0",
     "vue": "^2.5.2",
-    "vue-codemirror": "^4.0.6",
     "vue-i18n": "^8.8.2",
     "vue-router": "^3.0.1"
   },
@@ -34,6 +34,7 @@
     "file-loader": "^1.1.4",
     "friendly-errors-webpack-plugin": "^1.6.1",
     "html-webpack-plugin": "^2.30.1",
+    "monaco-editor-webpack-plugin": "^1.7.0",
     "node-notifier": "^5.1.2",
     "node-sass": "^4.9.0",
     "optimize-css-assets-webpack-plugin": "^3.2.0",

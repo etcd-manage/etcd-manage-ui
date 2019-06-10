@@ -23,7 +23,7 @@
         </RadioGroup>
         <Button
           type="success"
-          @click="addKeyInfoModel = true;addKeyInfo.kType='KEY'"
+          @click="showAddKeyInfoModel"
         >{{$t('public.add')}}</Button>
         <Poptip placement="left-end" confirm :title="$t('key.delConfirm')" @on-ok="delKeys">
           <Button type="error">{{$t('public.multiDelete')}}</Button>
@@ -56,12 +56,15 @@
           <Input v-model="showKeyInfo.version" disabled placeholder="Version"></Input>
         </FormItem>
         <FormItem label="Value" prop="value">
-          <codemirror
-            v-model="showKeyInfo.value"
-            :options="cmOption"
-            style="line-height:20px;border: 1px solid #dcdee2;"
-            ref="showEditor"
-          ></codemirror>
+          <!-- <monaco-editor
+class="editor"
+      width="800"
+      height="500"
+      v-model="showKeyInfo.value"
+      srcPath=""
+      :editorOptions="codeOptions"
+      language="javascript"
+    ></monaco-editor> -->
         </FormItem>
         <FormItem>
           <Button @click="saveKey" type="primary">{{$t('public.save')}}</Button>
@@ -71,7 +74,7 @@
     </Drawer>
 
     <!-- 添加弹框 -->
-    <Drawer :width="60" v-model="addKeyInfoModel" :title="$t('key.addKey')">
+    <Drawer :transfer="true" :width="60" v-model="addKeyInfoModel" :title="$t('key.addKey')">
       <Form :model="addKeyInfo" :label-width="80">
         <FormItem label="Key" prop="key">
           <Input v-model="addKeyInfo.key" placeholder="key">
@@ -86,12 +89,15 @@
         </FormItem>
         <div v-show="addKeyInfoType == 'KEY'">
           <FormItem label="Value" prop="value">
-            <codemirror
-              v-model="addKeyInfo.value"
-              ref="addEditor"
-              :options="cmOption"
-              style="line-height:20px;border: 1px solid #dcdee2;"
-            ></codemirror>
+            <MonacoEditor
+              class="editor"
+              height="450px"
+              width="100%"
+              :codes="addKeyInfo.value"
+              :editorOptions="codeOptions"
+              language="json"
+              ref="addMonacoEditor"
+            ></MonacoEditor>
           </FormItem>
         </div>
 
@@ -110,11 +116,16 @@ import KvGrid from "@/components/KvGrid";
 import KvList from "@/components/KvList";
 import { KV } from "@/api/kv.js";
 import { bus } from "@/page/bus.js";
+// import MonacoEditor from 'vue-monaco-editor'
+import MonacoEditor from "@/components/MonacoEditor"
+
+
 
 export default {
   components: {
     KvGrid,
-    KvList
+    KvList,
+    MonacoEditor
   },
   data() {
     return {
@@ -171,17 +182,16 @@ export default {
       addKeyInfo: {}, // 添加详细信息
       addKeyInfoType: 'KEY',
 
-      // 代码编辑器配置
-      cmOption: {
-        tabSize: 4,
-        smartIndent: true,
-        styleActiveLine: true,
-        lineNumbers: true,
-        line: true,
-        mode: "text/javascript",
-        lineWrapping: true,
-        theme: "default"
-      }
+      // 代码编辑配置
+      codeOptions: {
+        selectOnLineNumbers: true,
+        roundedSelection: false,
+        readOnly: false,
+        cursorStyle: 'line',
+        automaticLayout: false,
+        glyphMargin: true
+      },
+
     };
   },
   mounted() {
@@ -189,8 +199,8 @@ export default {
     this.getList("");
     // this.getRootTree("/");
     // 编辑器高度
-    this.$refs.addEditor.codemirror.setSize("auto", "60vh");
-    this.$refs.showEditor.codemirror.setSize("auto", "60vh");
+    // this.$refs.addEditor.codemirror.setSize("auto", "60vh");
+    // this.$refs.showEditor.codemirror.setSize("auto", "60vh");
     // 加载是否显示树形
     let showTree = localStorage.getItem('show-tree') || 'true';
     if (showTree == 'true'){
@@ -401,6 +411,17 @@ export default {
       } else {
         this.showSplit = 0;
       }
+    },
+
+    // 显示添加
+    showAddKeyInfoModel(){
+      this.addKeyInfoModel = true;
+      this.addKeyInfo.kType='KEY';
+      let self = this;
+      window.setTimeout(function () {
+        self.$refs.addMonacoEditor.initEditor();
+      }, 100)
+      
     }
   },
 
@@ -468,4 +489,5 @@ export default {
     padding: 0 6px;
   }
 }
+
 </style>
