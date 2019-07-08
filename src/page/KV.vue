@@ -20,6 +20,9 @@
           <Radio label="list">
             <Icon type="ios-list-box-outline"/>
           </Radio>
+          <Radio label="card">
+            <Icon type="ios-list-box-outline"/>
+          </Radio>
         </RadioGroup>
         <Button
           type="success"
@@ -41,6 +44,9 @@
           </div>
           <div class="list" v-show="listType == 'list'">
             <KvList ref="list" v-on:openKey="openKey"></KvList>
+          </div>
+          <div class="card" v-show="listType == 'card'">
+            <KvCard ref="card" v-on:openKey="openKey"></KvCard>
           </div>
         </div>
       </Split>
@@ -114,6 +120,7 @@ class="editor"
 <script>
 import KvGrid from "@/components/KvGrid";
 import KvList from "@/components/KvList";
+import KvCard from "@/components/KvCard";
 import { KV } from "@/api/kv.js";
 import { bus } from "@/page/bus.js";
 // import MonacoEditor from 'vue-monaco-editor'
@@ -125,6 +132,7 @@ export default {
   components: {
     KvGrid,
     KvList,
+    KvCard,
     MonacoEditor
   },
   data() {
@@ -232,6 +240,8 @@ export default {
         this.$refs.grid.getList(dir);
       } else if (this.listType == "list") {
         this.$refs.list.getList(dir);
+      } else if (this.listType == "card") {
+        this.$refs.card.getList(dir);
       }
     },
 
