@@ -1,15 +1,23 @@
 <template>
   <div class="key-card">
-    <Row :gutter="8">
-      <Col span="4" v-for="(item,key) in list" :key="key">
+    <Row :gutter="10">
+      <Col span="6" v-for="(item,key) in list" :key="key">
         <Card class="card">
           <div class="one-card" @click.stop="openKey(item)">
             <Row>
               <Col span="2" class="left">
+              <div class="left-body" @click.stop>
                 <Checkbox class="checkbox" v-model="item.check" v-if="item.is_dir==false"></Checkbox>
+                <Checkbox
+                  class="checkbox"
+                  v-model="item.check"
+                  v-else="item.is_dir==false"
+                  disabled
+                ></Checkbox>
+              </div>
               </Col>
               <Col span="20" class="centre">
-                <h5>{{ item.path }}</h5>
+                <div class="path">{{ item.path }}</div>
                 <p>{{item.name}}</p>
               </Col>
               <Col span="2" class="right">
@@ -24,6 +32,7 @@
                   src="../assets/imgs/folder.png"
                   alt="file"
                   class="key-icon"
+                  v-clipboard:copy="item"
                 />
               </Col>
             </Row>
@@ -81,22 +90,37 @@ export default {
 
 <style lang="scss" scoped>
 .key-card {
-    padding: 10px;
-    .ivu-card-body{
-        padding: 10px 3px;
-    }
+  padding: 10px;
+  padding-top: 0px;
+  .card {
+    background: #fcfcfc;
+    margin-top: 10px;
+  }
   .one-card {
-      .left {
-          text-align: center;
+    min-height: 65px;
+    .left {
+      text-align: center;
+      .left-body{
+        margin-top: 12px;
       }
-      .centre{
-          text-align: left;
+    }
+    .centre {
+      text-align: left;
+      .path {
+        word-wrap: break-word;
+        word-break: normal;
+        font-weight: 600;
       }
-      .right{
-          text-align: center;
+    }
+    .right {
+      text-align: center;
+      img {
+        margin: 0 auto;
+        margin-top: 12px;
       }
+    }
     .key-icon {
-      width: 90%;
+      width: 28px;
       height: auto;
     }
   }

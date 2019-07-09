@@ -21,7 +21,7 @@
             <Icon type="ios-list-box-outline"/>
           </Radio>
           <Radio label="card">
-            <Icon type="ios-list-box-outline"/>
+            <Icon type="ios-card-outline"/>
           </Radio>
         </RadioGroup>
         <Button
