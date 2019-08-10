@@ -1,0 +1,128 @@
+<template>
+  <div class="key-card">
+    <Row :gutter="10">
+      <Col span="6" v-for="(item,key) in list" :key="key">
+        <Card class="card">
+          <div class="one-card" @click.stop="openKey(item)">
+            <Row>
+              <Col span="2" class="left">
+              <div class="left-body" @click.stop>
+                <Checkbox class="checkbox" v-model="item.check" v-if="item.is_dir==false"></Checkbox>
+                <Checkbox
+                  class="checkbox"
+                  v-model="item.check"
+                  v-else="item.is_dir==false"
+                  disabled
+                ></Checkbox>
+              </div>
+              </Col>
+              <Col span="20" class="centre">
+                <div class="path">{{ item.path }}</div>
+                <p>{{item.name}}</p>
+              </Col>
+              <Col span="2" class="right">
+                <img
+                  v-if="item.is_dir==false"
+                  src="../assets/imgs/file.png"
+                  alt="file"
+                  class="key-icon"
+                />
+                <img
+                  v-if="item.is_dir==true"
+                  src="../assets/imgs/folder.png"
+                  alt="file"
+                  class="key-icon"
+                  v-clipboard:copy="item"
+                />
+              </Col>
+            </Row>
+          </div>
+        </Card>
+      </Col>
+    </Row>
+  </div>
+</template>
+<script>
+import { KV } from "@/api/kv.js";
+
+// grid方式展示key
+export default {
+  data() {
+    return {
+      list: [],
+      dir: "", // 要显示的目录
+      selected: [] // 选中的key
+    };
+  },
+  mounted() {},
+  methods: {
+    getList(dir) {
+      this.list = [];
+      this.dir = dir;
+      KV.GetKeyList(dir).then(response => {
+        this.list = response.data || [];
+        // console.log(response);
+      });
+    },
+    checkKey(item) {
+      item.check = !item.check;
+
+      let selected = [];
+      this.list.forEach(val => {
+        // console.log(val)
+        if (val.check == true) {
+          selected.push(val);
+        }
+      });
+      this.selected = selected;
+      console.log(selected);
+    },
+    openKey(item) {
+      this.$emit("openKey", item);
+    },
+    // 清除
+    clearSelected() {
+      this.selected = [];
+    }
+  }
+};
+</script>
+
+<style lang="scss" scoped>
+.key-card {
+  padding: 10px;
+  padding-top: 0px;
+  .card {
+    background: #fcfcfc;
+    margin-top: 10px;
+  }
+  .one-card {
+    min-height: 65px;
+    .left {
+      text-align: center;
+      .left-body{
+        margin-top: 12px;
+      }
+    }
+    .centre {
+      text-align: left;
+      .path {
+        word-wrap: break-word;
+        word-break: normal;
+        font-weight: 600;
+      }
+    }
+    .right {
+      text-align: center;
+      img {
+        margin: 0 auto;
+        margin-top: 12px;
+      }
+    }
+    .key-icon {
+      width: 28px;
+      height: auto;
+    }
+  }
+}
+</style>
