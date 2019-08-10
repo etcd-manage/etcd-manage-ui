@@ -87,8 +87,8 @@ export default {
     };
   },
   mounted() {
-    // this.initEditor();
     this.selLanguage = this.language;
+    this.initEditor();
   },
   methods: {
     initEditor() {
