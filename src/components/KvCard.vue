@@ -17,8 +17,14 @@
               </div>
               </Col>
               <Col span="20" class="centre">
-                <div class="path">{{ item.path }}</div>
-                <p>{{item.name}}</p>
+                <Tooltip placement="top" max-width="500" transfer>
+                  <div class="path">{{ item.path }}</div>
+                  <div class="value">{{item.value}}</div>
+                  <div slot="content">
+                      <p>{{ item.path }}</p>
+                      <p><pre>{{item.value}}</pre></p>
+                  </div>
+                </Tooltip>
               </Col>
               <Col span="2" class="right">
                 <img
@@ -32,7 +38,6 @@
                   src="../assets/imgs/folder.png"
                   alt="file"
                   class="key-icon"
-                  v-clipboard:copy="item"
                 />
               </Col>
             </Row>
@@ -97,7 +102,7 @@ export default {
     margin-top: 10px;
   }
   .one-card {
-    min-height: 65px;
+    min-height: 50px;
     .left {
       text-align: center;
       .left-body{
@@ -110,6 +115,16 @@ export default {
         word-wrap: break-word;
         word-break: normal;
         font-weight: 600;
+        white-space: nowrap;
+        text-overflow:ellipsis;
+        overflow:hidden;
+      }
+      .value{
+        overflow: hidden;
+        -webkit-line-clamp: 2;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
       }
     }
     .right {

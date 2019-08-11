@@ -65,6 +65,31 @@ export default {
           key: "version"
         },
         {
+          title: "Value",
+          key: "value",
+          render: (h, params) => {
+            return h("div", [
+              h('Tooltip', {
+                props: {
+                  placement: 'top',
+                  'max-width': 500,
+                  content: params.row.value
+                }
+              }, [
+                h('span',{
+                  style: {
+                    'overflow': 'hidden',
+                    '-webkit-line-clamp': 2,
+                    'text-overflow': 'ellipsis',
+                    'display': '-webkit-box',
+                    '-webkit-box-orient': 'vertical'
+                  }
+                }, params.row.value)
+              ]),
+            ])
+          }
+        },
+        {
           title: " ",
           align: "center",
           render: (h, params) => {

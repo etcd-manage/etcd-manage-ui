@@ -71,6 +71,15 @@ class="editor"
       :editorOptions="codeOptions"
       language="javascript"
     ></monaco-editor> -->
+          <MonacoEditor
+            class="editor"
+            height="450px"
+            width="100%"
+            :codes="showKeyInfo.value"
+            :editorOptions="codeOptions"
+            language="json"
+            ref="showMonacoEditor"
+          ></MonacoEditor>
         </FormItem>
         <FormItem>
           <Button @click="saveKey" type="primary">{{$t('public.save')}}</Button>
@@ -263,7 +272,7 @@ export default {
         dir = paths.join("/");
       }
 
-      console.log(dir);
+      // console.log(dir);
       this.getList(dir);
     },
 
@@ -275,6 +284,10 @@ export default {
           this.showKeyInfo = response.data;
           this.showKeyInfoModel = true;
         });
+        let self = this;
+        window.setTimeout(function () {
+          self.$refs.showMonacoEditor.initEditor();
+        }, 100)
       } else {
         this.getList(item.path);
       }
@@ -316,6 +329,7 @@ export default {
     saveKey() {
       let putData = this.showKeyInfo;
       putData.is_dir = false;
+      putData.value = this.$refs.showMonacoEditor.getValue();
       KV.SaveKey(putData).then(response => {
         this.$Message.success(this.$t("key.saveSuccessfully"));
         this.getList(this.fullDir);
@@ -342,14 +356,14 @@ export default {
       console.log(this.addKeyInfo);
 
       let fullDir = this.fullDir;
-      // if (fullDir == "/") {
-      //   fullDir = "";
-      // }
+      if (fullDir != '/' && fullDir != '') {
+        fullDir += '/';
+      }
       // 请求参数
       let postData = {
         path: fullDir + this.addKeyInfo.key,
         is_dir: this.addKeyInfo.kType == "DIR",
-        value: this.addKeyInfo.value
+        value: this.$refs.addMonacoEditor.getValue()
       };
       this.addKeyInfo.value = "";
       this.addKeyInfo.key = "";

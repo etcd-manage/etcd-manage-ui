@@ -68,7 +68,7 @@ export default {
       themeOption: [
         {
           value: "vs",
-          label: "默认"
+          label: "浅色"
         },
         {
           value: "hc-black",
@@ -111,9 +111,9 @@ export default {
         self.initEditor();
       });
     },
-    // RunResult() {
-    //   console.log(this.monacoEditor.getValue());
-    // },
+    getValue() {
+      return this.monacoEditor.getValue();
+    },
     themeChange(val) {
       this.initEditor();
     },
