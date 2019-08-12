@@ -62,15 +62,6 @@
           <Input v-model="showKeyInfo.version" disabled placeholder="Version"></Input>
         </FormItem>
         <FormItem label="Value" prop="value">
-          <!-- <monaco-editor
-class="editor"
-      width="800"
-      height="500"
-      v-model="showKeyInfo.value"
-      srcPath=""
-      :editorOptions="codeOptions"
-      language="javascript"
-    ></monaco-editor> -->
           <MonacoEditor
             class="editor"
             height="450px"
@@ -328,7 +319,7 @@ export default {
     // 保存key - 修改操作
     saveKey() {
       let putData = this.showKeyInfo;
-      putData.is_dir = false;
+      // putData.is_dir = false;
       putData.value = this.$refs.showMonacoEditor.getValue();
       KV.SaveKey(putData).then(response => {
         this.$Message.success(this.$t("key.saveSuccessfully"));
@@ -362,7 +353,7 @@ export default {
       // 请求参数
       let postData = {
         path: fullDir + this.addKeyInfo.key,
-        is_dir: this.addKeyInfo.kType == "DIR",
+        // is_dir: this.addKeyInfo.kType == "DIR",
         value: this.$refs.addMonacoEditor.getValue()
       };
       this.addKeyInfo.value = "";

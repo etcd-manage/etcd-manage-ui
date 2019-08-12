@@ -15,11 +15,12 @@ axios.interceptors.request.use(
         let loginInfoStr = sessionStorage.getItem('login-info');
         if(loginInfoStr){
             let loginInfo = JSON.parse(loginInfoStr);
-            config.auth = {
-                username: loginInfo.username,
-                password: loginInfo.password
-            };
-            console.log(config);
+            config.headers.Token = loginInfo.token;
+            // config.auth = {
+            //     username: loginInfo.username,
+            //     password: loginInfo.password
+            // };
+            // console.log(config);
         }
         // etcd服务
         let etcdID = localStorage.getItem('EtcdID') || ''; // 读取当前选中的etcd server

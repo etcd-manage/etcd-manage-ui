@@ -42,6 +42,7 @@ import CloudHeader from "../common/CloudHeader";
 import CloudSideBar from "../common/CloudSideBar";
 import CloudContainer from "../common/CloudContainer";
 import { bus } from "@/page/bus.js";
+import { Passport } from "@/api/passport.js";
 
 export default {
   name: "CloudHome",
@@ -68,8 +69,11 @@ export default {
   methods:{
     onLogin(){
       console.log(this.loginForm);
-      sessionStorage.setItem('login-info', JSON.stringify(this.loginForm));
-      this.$router.go(0);
+      Passport.Login(this.loginForm.username, this.loginForm.password).then(response => {
+          sessionStorage.setItem('login-info', JSON.stringify(response.data));
+          this.$router.go(0);
+      });
+
     }
   }
 };
