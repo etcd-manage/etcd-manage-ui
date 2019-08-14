@@ -6,13 +6,14 @@
           <div class="one-card" @click.stop="openKey(item)">
             <Row>
               <Col span="2" class="left">
-              <div class="left-body" @click.stop>
+              <div class="left-body" @click.stop="checkKey(item)">
                 <Checkbox class="checkbox" v-model="item.check" v-if="item.is_dir==false"></Checkbox>
                 <Checkbox
                   class="checkbox"
                   v-model="item.check"
                   v-else="item.is_dir==false"
                   disabled
+                  @click="checkKey(item)"
                 ></Checkbox>
               </div>
               </Col>

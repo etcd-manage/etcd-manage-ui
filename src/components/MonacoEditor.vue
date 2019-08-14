@@ -93,6 +93,7 @@ export default {
   methods: {
     initEditor() {
       let self = this;
+      self.codesCopy = '';
       self.$refs.container.innerHTML = "";
       self.monacoEditor = monaco.editor.create(self.$refs.container, {
         value: self.codesCopy || self.codes,

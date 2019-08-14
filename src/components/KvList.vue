@@ -207,6 +207,16 @@ export default {
       this.changeListPage(1);
       this.page = 1;
     },
+    // 删除一个值
+    delOneKey(dir) {
+      if (!dir) {
+        return;
+      }
+      KV.DelKey(dir).then(response => {
+        this.getList(this.dir);
+      });
+    },
+
 
 
 

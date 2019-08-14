@@ -83,15 +83,9 @@
     <Drawer :transfer="true" :width="60" v-model="addKeyInfoModel" :title="$t('key.addKey')">
       <Form :model="addKeyInfo" :label-width="80">
         <FormItem label="Key" prop="key">
-          <Input v-model="addKeyInfo.key" placeholder="key">
+          <Input v-model="addKeyInfo.key" placeholder="Key path, which can contain multiple'/'">
             <span slot="prepend">{{fullDir}}</span>
           </Input>
-        </FormItem>
-        <FormItem label="KeyType" prop="kType">
-          <RadioGroup v-model="addKeyInfo.kType" @on-change="changeKeyType">
-            <Radio label="KEY"></Radio>
-            <Radio label="DIR"></Radio>
-          </RadioGroup>
         </FormItem>
         <div v-show="addKeyInfoType == 'KEY'">
           <FormItem label="Value" prop="value">
@@ -205,10 +199,6 @@ export default {
   mounted() {
     // 获取列表
     this.getList("");
-    // this.getRootTree("/");
-    // 编辑器高度
-    // this.$refs.addEditor.codemirror.setSize("auto", "60vh");
-    // this.$refs.showEditor.codemirror.setSize("auto", "60vh");
     // 加载是否显示树形
     let showTree = localStorage.getItem('show-tree') || 'true';
     if (showTree == 'true'){
@@ -291,6 +281,8 @@ export default {
         selected = this.$refs.grid.selected;
       } else if (this.listType == "list") {
         selected = this.$refs.list.selected;
+      } else if (this.listType == "card") {
+        selected = this.$refs.card.selected;
       }
       console.log(selected);
       if (selected.length == 0) {
@@ -432,6 +424,7 @@ export default {
     showAddKeyInfoModel(){
       this.addKeyInfoModel = true;
       this.addKeyInfo.kType='KEY';
+      this.addKeyInfo.value = '';
       let self = this;
       window.setTimeout(function () {
         self.$refs.addMonacoEditor.initEditor();
@@ -493,8 +486,8 @@ export default {
 
   .split-left {
     padding-left: 10px;
-    .ivu-tree ul {
-      font-size: 15px !important;
+    /deep/ .ivu-tree ul {
+      font-size: 18px !important;
       li {
         margin: 3px 0;
       }
