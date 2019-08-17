@@ -69,7 +69,7 @@ export default {
             },
             {
               main_memu_id: 1,
-              mainTitle: this.$t('sideBar.Other'),
+              mainTitle: this.$t('sideBar.Setings'),
               submenuList: [
                 {
                   submenuTitle: this.$t('sideBar.EtcdServers'),

@@ -5,7 +5,8 @@ const lang = {
         MEMBERS: '集群信息',
         Other: '其它',
         EtcdServers: 'Etcd 服务列表',
-        Logs: '日志'
+        Logs: '日志',
+        Setings: '设置'
     },
     login:{
         title: '登 录',

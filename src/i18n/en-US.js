@@ -5,7 +5,8 @@ const lang = {
         MEMBERS: 'MEMBERS',
         Other: 'Other',
         EtcdServers: 'Etcd Servers',
-        Logs: 'Logs'
+        Logs: 'Logs',
+        Setings: 'Setings'
     },
     login:{
         title: 'Login',
