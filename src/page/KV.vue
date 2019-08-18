@@ -117,10 +117,7 @@ import KvList from "@/components/KvList";
 import KvCard from "@/components/KvCard";
 import { KV } from "@/api/kv.js";
 import { bus } from "@/page/bus.js";
-// import MonacoEditor from 'vue-monaco-editor'
 import MonacoEditor from "@/components/MonacoEditor"
-
-
 
 export default {
   components: {
@@ -454,6 +451,7 @@ export default {
 
 <style lang='scss' scoped>
 .kv {
+  max-height: calc(100vh - 100px);
   .breadcrumb {
     position: fixed;
     height: 50px;

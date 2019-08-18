@@ -75,13 +75,19 @@ export default {
                   submenuTitle: this.$t('sideBar.EtcdServers'),
                   submenuID: 2,
                   icon: "md-filing",
-                  path: '/other/EtcdServers'
+                  path: '/setings/EtcdServers'
                 },
                 {
-                  submenuTitle: this.$t('sideBar.Logs'),
+                  submenuTitle: this.$t('sideBar.User'),
                   submenuID: 3,
-                  icon: "md-copy",
-                  path: '/other/Logs'
+                  icon: "ios-contact",
+                  path: '/setings/user'
+                },
+                {
+                  submenuTitle: this.$t('sideBar.Role'),
+                  submenuID: 4,
+                  icon: "ios-people",
+                  path: '/setings/role'
                 }
               ]
             }

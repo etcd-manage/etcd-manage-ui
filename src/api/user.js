@@ -1,11 +1,11 @@
 import axios from './api'
 
-const Role = {
+const User = {
     /**
      * 全部角色
      */
-    GetAll() {
-        return axios.get(`/v1/role`);
+    GetList(userId, username, roleId, page, pageSize) {
+        return axios.get(`/v1/user?user_id=${userId}&name=${username}&role_id=${roleId}&page=${page}&page_size=${pageSize}`);
     },
 
     /**
@@ -13,7 +13,7 @@ const Role = {
      * @param {*} data 添加角色信息
      */
     Add(data){
-        return axios.post('/v1/role', data)
+        return axios.post('/v1/user', data)
     },
 
     /**
@@ -21,7 +21,7 @@ const Role = {
      * @param {*} id 
      */
     Del(id){
-        return axios.delete(`/v1/role?id=${id}`)
+        return axios.delete(`/v1/user?id=${id}`)
     },
 
     /**
@@ -29,11 +29,11 @@ const Role = {
      * @param {*} data 
      */
     Save(data){
-        return axios.put('/v1/role', data)
+        return axios.put('/v1/user', data)
     },
 
 }
 
 export {
-    Role
+    User
 }

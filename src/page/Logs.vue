@@ -1,6 +1,7 @@
 <style scoped lang='scss'>
 .logs{
   padding: 10px;
+  max-height: calc(100vh - 100px);
 }
 .search{
     width: 100%;

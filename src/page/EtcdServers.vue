@@ -252,7 +252,7 @@ export default {
             // pageSize
             this.data1.splice(0, this.data1.length);
             this.data1 = this.data.slice((page - 1) * this.pageSize, page * this.pageSize);
-            console.log(page);
+            // console.log(page);
         },
         // 页面打小
         pageSizeChange(pageSize){
@@ -324,6 +324,7 @@ export default {
 <style lang="scss" scoped>
     .etcd-servers{
         padding: 10px;
+        max-height: calc(100vh - 100px);
         .page{
             margin-top:10px; 
             text-align: right;

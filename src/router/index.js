@@ -21,14 +21,19 @@ export default new Router({
         component: () => import('@/page/Members'),
       },
       {
-        path: '/other/EtcdServers',
+        path: '/setings/EtcdServers',
         name: 'EtcdServers',
         component: () => import('@/page/EtcdServers'),
       },
       {
-        path: '/other/Logs',
-        name: 'Logs',
-        component: () => import('@/page/Logs'),
+        path: '/setings/user',
+        name: 'User',
+        component: () => import('@/page/User'),
+      },
+      {
+        path: '/setings/role',
+        name: 'Role',
+        component: () => import('@/page/Role'),
       }
       
     ]

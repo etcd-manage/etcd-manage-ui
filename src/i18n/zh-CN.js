@@ -6,7 +6,9 @@ const lang = {
         Other: '其它',
         EtcdServers: 'Etcd 服务列表',
         Logs: '日志',
-        Setings: '设置'
+        Setings: '设置',
+        Role: '角色',
+        User: '用户'
     },
     login:{
         title: '登 录',
