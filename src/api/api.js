@@ -10,17 +10,11 @@ axios.defaults.baseURL = Config.BaseUrl
 // 请求之前拦截
 axios.interceptors.request.use(
     config => {
-        // config.headers.Authorization = 'Basic YWRtaW46MTIzNDU2'
-        // Basic Auth 认证
+        // 添加用户认证信息
         let loginInfoStr = sessionStorage.getItem('login-info');
         if(loginInfoStr){
             let loginInfo = JSON.parse(loginInfoStr);
             config.headers.Token = loginInfo.token;
-            // config.auth = {
-            //     username: loginInfo.username,
-            //     password: loginInfo.password
-            // };
-            // console.log(config);
         }
         // etcd服务
         let etcdID = localStorage.getItem('EtcdID') || ''; // 读取当前选中的etcd server
@@ -36,7 +30,7 @@ axios.interceptors.request.use(
 // 请求相应拦截器
 axios.interceptors.response.use(
     response => {
-        console.log(response)
+        // console.log(response)
         // 未登录情况
         if (response.status == 401) {
             ShowLogin();
@@ -49,7 +43,7 @@ axios.interceptors.response.use(
     },
     error => {
         iView.LoadingBar.error();
-        console.log(error.response);
+        // console.log(error.response);
         if (error.response) {
             if (error.response.status == 400) {
                 Message.error(error.response.data.msg);

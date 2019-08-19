@@ -13,10 +13,19 @@
 
       <!-- 一级菜单列表 -->
       <ul class="first-menu-wrapper">
-        <li class="item-menu-wrapper" v-for="(unfoldItem,unfoldItemIndex) in menuList" :key="unfoldItemIndex">
-          <div class="item-menu-title" @click="unfoldItemMenu(unfoldItem,unfoldItemIndex)" >
+        <li
+          class="item-menu-wrapper"
+          v-for="(unfoldItem,unfoldItemIndex) in menuList"
+          :key="unfoldItemIndex"
+          v-if="unfoldItem.main_memu_id != 1 || loginInfo.role_id == 1"
+        >
+          <div class="item-menu-title" @click="unfoldItemMenu(unfoldItem,unfoldItemIndex)">
             <div v-if="unfoldItem.submenuList.length > 0">
-              <Icon type="ios-arrow-down" class="icon1" v-if="unfoldItemMenuIndex==unfoldItemIndex" />
+              <Icon
+                type="ios-arrow-down"
+                class="icon1"
+                v-if="unfoldItemMenuIndex==unfoldItemIndex"
+              />
               <Icon type="ios-arrow-forward" class="icon1" v-else />
             </div>
             <div v-else>
@@ -24,10 +33,18 @@
             </div>
 
             <!-- <img src="../assets/img/down.png" alt="" v-if="unfoldItemMenuIndex==unfoldItemIndex"> -->
-            <span v-if="!isUnfold">{{unfoldItem.mainTitle}}</span> 
+            <span v-if="!isUnfold">{{unfoldItem.mainTitle}}</span>
           </div>
-          <ul class="item-menu-list" :unfoldItemIndex="unfoldItemIndex" v-show="unfoldItemMenuIndex==unfoldItemIndex">
-            <li v-for="(mainMenuItem,index) in unfoldItem.submenuList" :key="index" @click="computeSubMenuList(mainMenuItem)">
+          <ul
+            class="item-menu-list"
+            :unfoldItemIndex="unfoldItemIndex"
+            v-show="unfoldItemMenuIndex==unfoldItemIndex"
+          >
+            <li
+              v-for="(mainMenuItem,index) in unfoldItem.submenuList"
+              :key="index"
+              @click="computeSubMenuList(mainMenuItem)"
+            >
               <div class="submenu">
                 <Icon :type="mainMenuItem.icon" class="icon1" />
                 <!-- <i class="iconfont" :class="mainMenuItem.icon"></i> -->
@@ -37,7 +54,7 @@
           </ul>
         </li>
       </ul>
-      <!-- 一级菜单列表 END -->      
+      <!-- 一级菜单列表 END -->
     </div>
   </div>
 </template>
@@ -46,52 +63,53 @@
 export default {
   data() {
     return {
+      loginInfo: { role_id: 0 },
       isUnfold: false, // 判断展开还是隐藏一级菜单,
       unfoldItemMenuIndex: 0, // 判断展开还是隐藏一个菜单列表
       menuList: [
+        {
+          main_memu_id: 0,
+          mainTitle: this.$t("sideBar.oneEtcd"),
+          submenuList: [
             {
-              main_memu_id: 0,
-              mainTitle: this.$t('sideBar.oneEtcd'),
-              submenuList: [
-                {
-                  submenuTitle: this.$t('sideBar.KV'),
-                  icon: "logo-buffer",
-                  submenuID: 0,
-                  path: '/key/kv'
-                },
-                {
-                  submenuTitle: this.$t('sideBar.MEMBERS'),
-                  icon: "ios-desktop",
-                  submenuID: 1,
-                  path: '/server/members'
-                }
-              ]
+              submenuTitle: this.$t("sideBar.KV"),
+              icon: "logo-buffer",
+              submenuID: 0,
+              path: "/key/kv"
             },
             {
-              main_memu_id: 1,
-              mainTitle: this.$t('sideBar.Setings'),
-              submenuList: [
-                {
-                  submenuTitle: this.$t('sideBar.EtcdServers'),
-                  submenuID: 2,
-                  icon: "md-filing",
-                  path: '/setings/EtcdServers'
-                },
-                {
-                  submenuTitle: this.$t('sideBar.User'),
-                  submenuID: 3,
-                  icon: "ios-contact",
-                  path: '/setings/user'
-                },
-                {
-                  submenuTitle: this.$t('sideBar.Role'),
-                  submenuID: 4,
-                  icon: "ios-people",
-                  path: '/setings/role'
-                }
-              ]
+              submenuTitle: this.$t("sideBar.MEMBERS"),
+              icon: "ios-desktop",
+              submenuID: 1,
+              path: "/server/members"
             }
           ]
+        },
+        {
+          main_memu_id: 1,
+          mainTitle: this.$t("sideBar.Setings"),
+          submenuList: [
+            {
+              submenuTitle: this.$t("sideBar.EtcdServers"),
+              submenuID: 0,
+              icon: "md-filing",
+              path: "/setings/EtcdServers"
+            },
+            {
+              submenuTitle: this.$t("sideBar.User"),
+              submenuID: 1,
+              icon: "ios-contact",
+              path: "/setings/user"
+            },
+            {
+              submenuTitle: this.$t("sideBar.Role"),
+              submenuID: 2,
+              icon: "ios-people",
+              path: "/setings/role"
+            }
+          ]
+        }
+      ]
     };
   },
   methods: {
@@ -107,12 +125,14 @@ export default {
     },
     // 菜单选中
     unfoldItemMenu(unfoldItem, unfoldItemIndex) {
+      console.log(unfoldItem);
       if (this.unfoldItemMenuIndex == unfoldItemIndex) {
         this.unfoldItemMenuIndex = null;
       } else {
         this.unfoldItemMenuIndex = unfoldItemIndex;
       }
       sessionStorage.setItem("unfoldItemMenuIndex", unfoldItemIndex);
+      this.activateSubmenu();
     },
     activateSubmenu() {
       let submenuObj = document.getElementsByClassName("submenu");
@@ -131,12 +151,16 @@ export default {
       sessionStorage.setItem("submenuID", info.submenuID);
       this.subMenuList = info.submenuItemList;
       this.$router.push({ path: info.path });
-
     }
   },
-  created() {
-  },
+  created() {},
   mounted() {
+    // 加载用户信息
+    let loginInfoStr = sessionStorage.getItem("login-info");
+    if (loginInfoStr) {
+      this.loginInfo = JSON.parse(loginInfoStr);
+    }
+
     if (sessionStorage.getItem("isUnfold")) {
       if (sessionStorage.getItem("isUnfold") == 1) {
         this.isUnfold = true;
@@ -144,32 +168,42 @@ export default {
         this.isUnfold = false;
       }
     }
-    this.activateSubmenu();
+    
     if (sessionStorage.getItem("mainMenuItemIndex")) {
       let index = Number(sessionStorage.getItem("mainMenuItemIndex"));
-      let submenuObj = document.getElementsByClassName("submenu");
-      submenuObj[index].className = "submenu submenu-active";
-      this.unfoldItemMenuIndex = submenuObj[
-        index
-      ].parentNode.parentNode.getAttribute("unfoldItemIndex");
+      setTimeout(() => {
+        this.activateSubmenu();
+        let submenuObj = document.getElementsByClassName("submenu");
+        // console.log(submenuObj.length);
+        submenuObj[index].className = "submenu submenu-active";
+        this.unfoldItemMenuIndex = submenuObj[
+          index
+        ].parentNode.parentNode.getAttribute("unfoldItemIndex");
+      }, 300);
     }
-    if (sessionStorage.getItem("submenuID")) {
-      let submenuObj = document.getElementsByClassName("submenu");
-      for (let i = 0; i < submenuObj.length; i++) {
-        submenuObj[i].className = "submenu";
-      }
-      let index = Number(sessionStorage.getItem("submenuID"));
-      submenuObj[index].className = "submenu submenu-active";
-      this.menuList.map(v => {
-        v.submenuList.map(vm => {
-          if (vm.submenuID == Number(sessionStorage.getItem("submenuID")) + 1) {
-            this.subMenuList = vm.submenuItemList;
-          }
-        });
-      });
-    }
+    // if (sessionStorage.getItem("submenuID")) {
+    //   setTimeout(() => {
+    //     let submenuObj = document.getElementsByClassName("submenu");
+    //     console.log(submenuObj.length);
+        
+    //     for (let i = 0; i < submenuObj.length; i++) {
+    //       submenuObj[i].className = "submenu";
+    //     }
+    //     let index = Number(sessionStorage.getItem("submenuID"));
+    //     submenuObj[index].className = "submenu submenu-active";
+    //     this.menuList.map(v => {
+    //       v.submenuList.map(vm => {
+    //         if (
+    //           vm.submenuID ==
+    //           Number(sessionStorage.getItem("submenuID")) + 1
+    //         ) {
+    //           this.subMenuList = vm.submenuItemList;
+    //         }
+    //       });
+    //     });
+    //   }, 300);
+    // }
   }
-
 };
 </script>
 
@@ -258,7 +292,7 @@ export default {
       }
     }
   }
-  .icon1{
+  .icon1 {
     font-size: 18px;
     width: 50px;
     text-align: center;

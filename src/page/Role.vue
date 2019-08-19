@@ -79,6 +79,9 @@ export default {
                     confirm: true,
                     title: this.$t("public.confirmDelete")
                   },
+                  style: {
+                    display:(params.row.id == 1) ? "none" : "inline-block",
+                  },
                   on: {
                     "on-ok": () => {
                       this.delete(params.row);

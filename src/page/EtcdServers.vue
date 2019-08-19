@@ -59,17 +59,17 @@
                 </Select>
             </FormItem>
             <FormItem label="cert:" v-show="info.tls_enable == 'true'">
-                <Upload action="//jsonplaceholder.typicode.com/posts/" name="file" @on-success="uploadSuccessCert">
+                <Upload :action="baseUrl+'/v1/upload/content'" name="file" @on-success="uploadSuccessCert">
                     <Button icon="ios-cloud-upload-outline">Upload files</Button>
                 </Upload>
             </FormItem>
             <FormItem label="key:" v-show="info.tls_enable == 'true'">
-                <Upload action="//jsonplaceholder.typicode.com/posts/" name="file" @on-success="uploadSuccessKey">
+                <Upload :action="baseUrl+'/v1/upload/content'" name="file" @on-success="uploadSuccessKey">
                     <Button icon="ios-cloud-upload-outline">Upload files</Button>
                 </Upload>
             </FormItem>
             <FormItem label="ca:" v-show="info.tls_enable == 'true'">
-                <Upload action="//jsonplaceholder.typicode.com/posts/" name="file" @on-success="uploadSuccessCa">
+                <Upload :action="baseUrl+'/v1/upload/content'" name="file" @on-success="uploadSuccessCa">
                     <Button icon="ios-cloud-upload-outline">Upload files</Button>
                 </Upload>
             </FormItem>
@@ -119,17 +119,17 @@
                 </Select>
             </FormItem>
             <FormItem label="cert:" v-show="edit.tls_enable == 'true'">
-                <Upload action="//jsonplaceholder.typicode.com/posts/" name="file" @on-success="uploadSuccessCert">
+                <Upload :action="baseUrl+'/v1/upload/content'" name="file" @on-success="uploadSuccessCert">
                     <Button icon="ios-cloud-upload-outline">Upload files</Button>
                 </Upload>
             </FormItem>
             <FormItem label="key:" v-show="edit.tls_enable == 'true'">
-                <Upload action="//jsonplaceholder.typicode.com/posts/" name="file" @on-success="uploadSuccessKey">
+                <Upload :action="baseUrl+'/v1/upload/content'" name="file" @on-success="uploadSuccessKey">
                     <Button icon="ios-cloud-upload-outline">Upload files</Button>
                 </Upload>
             </FormItem>
             <FormItem label="ca:" v-show="edit.tls_enable == 'true'">
-                <Upload action="//jsonplaceholder.typicode.com/posts/" name="file" @on-success="uploadSuccessCa">
+                <Upload :action="baseUrl+'/v1/upload/content'" name="file" @on-success="uploadSuccessCa">
                     <Button icon="ios-cloud-upload-outline">Upload files</Button>
                 </Upload>
             </FormItem>
@@ -149,6 +149,7 @@
 </template>
 <script>
 import { SERVER } from "@/api/server.js";
+import { Config } from "@/config"
 
 export default {
     data() {
@@ -237,6 +238,8 @@ export default {
 
             modalEdit: false, // 修改弹框
             edit: {}, // 修改对象
+
+            baseUrl: '', // 上传文件根目录
         }
     },
     methods:{
@@ -282,18 +285,19 @@ export default {
         },
 
         // 第一个证书
-        uploadSuccessCert(response, file){
-            console.log(response, file);
+        uploadSuccessCert(response, file, fileList){
+            console.log(909090)
+            console.log(response, file, fileList);
         },
 
         // 第二个证书
         uploadSuccessKey(response, file){
-
+            console.log(response, file);
         },
 
         // 第三个证书
         uploadSuccessCa(response, file){
-
+            console.log(response, file);
         },
 
         // 修改
@@ -316,6 +320,7 @@ export default {
 
     },
     mounted(){
+        this.baseUrl = Config.BaseUrl;
         this.getList();
     }
 }
