@@ -25,7 +25,8 @@ const lang = {
         hide:'Hide',
         save:'Save',
         close:'Close',
-        screen:'Local screening'
+        screen:'Local screening',
+        role: "Role"
     },
     header:{
         'personalCenter':'Personal Center',

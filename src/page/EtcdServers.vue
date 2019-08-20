@@ -164,6 +164,14 @@
       </Form>
     </Modal>
     <!-- end 修改 -->
+
+    <!-- 权限设置 -->
+     <Modal v-model="modalRole" :title="$t('public.role')" @on-ok="roleOk">
+       <Table :columns="columnsRole" :data="roleList"></Table>
+     </Modal>
+
+    <!-- end 权限设置 -->
+
   </div>
 </template>
 <script>
@@ -271,7 +279,7 @@ export default {
                     }
                   }
                 },
-                this.$t("public.edit")
+                this.$t("public.role")
               )
             ]);
           }
@@ -291,6 +299,8 @@ export default {
       baseUrl: "", // 上传文件根目录
 
       // 角色选择
+      modalRole: false,
+      roleList: [], // 权限信息
       columnsRole: [
         {
           title: "角色",
@@ -307,26 +317,70 @@ export default {
                 {
                   props: {
                     type: "primary",
-                    size: "small"
+                    size: "small",
+                    value: params.row.read,
+                    'true-value': 1,
+                    'false-value': 0,
+                    disabled: this.roleList[params.index].write == 1
                   },
                   style: {
                     marginRight: "5px"
                   },
                   on: {
-                    click: () => {
-                      this.show(params.index);
+                    'on-change': (val) => {
+                      if(val == 1){
+                        this.roleList[params.index].read = 1
+                      }else{
+                        if (this.roleList[params.index].write == 1){
+                          this.$Message.info("拥有读权限，写权限必须有")
+                          params.row.read = 1
+                          return false
+                        }
+                        this.roleList[params.index].read = 0
+                      }
                     }
                   }
                 },
-                "View"
+                "读"
               )
             ]);
           }
         },
         {
           title: "写权限",
-          key: "action1",
-          align: "center"
+          key: "write",
+          align: "center",
+          render: (h, params) => {
+            return h("div", [
+              h(
+                "Checkbox",
+                {
+                  props: {
+                    type: "primary",
+                    size: "small",
+                    value: params.row.write,
+                    'true-value': 1,
+                    'false-value': 0
+                  },
+                  style: {
+                    marginRight: "5px"
+                  },
+                  on: {
+                    'on-change': (val) => {
+                      // console.log(val);
+                      if(val == 1){
+                        this.roleList[params.index].write = 1
+                        this.roleList[params.index].read = 1
+                      }else{
+                        this.roleList[params.index].write = 0
+                      }
+                    }
+                  }
+                },
+                "写"
+              )
+            ]);
+          }
         }
       ]
     };
@@ -411,8 +465,21 @@ export default {
 
     // 显示etcd角色分配弹框
     roles(row) {
-      console.log(row);
+      console.log(row)
+      SERVER.GetRoles(row.id).then(response => {
+        if (response.status == 200) {
+          this.roleList = response.data
+          this.modalRole = true
+        }
+      })
+    },
+
+    // 权限确定
+    roleOk(){
+      console.log(this.roleList);
+      
     }
+
   },
   mounted() {
     this.baseUrl = Config.BaseUrl;

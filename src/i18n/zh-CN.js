@@ -25,7 +25,8 @@ const lang = {
         hide:'隐藏',
         save:'保存',
         close:'关闭',
-        screen:'本地筛选'
+        screen:'本地筛选',
+        role: '权限'
     },
     header:{
         'personalCenter':'个人中心',

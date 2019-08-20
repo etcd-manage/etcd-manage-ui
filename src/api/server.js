@@ -40,7 +40,30 @@ const SERVER = {
             return
         }
         return axios.get(`/v1/server/restore?etcd_id=${id}`);
+    },
+    
+    /**
+     * 获取权限列表
+     * @param {*} id etcd服务id
+     */
+    GetRoles(id){
+        if (!id){
+            return
+        }
+        return axios.get(`/v1/server/roles?etcd_id=${id}`);
+    },
+
+    /**
+     * 设置etcd服务权限配置
+     * @param {*} data 
+     */
+    SetRoles(data){
+        if (!data){
+            return
+        }
+        return axios.post(`/v1/server/roles`, data);
     }
+
 
 }
 
