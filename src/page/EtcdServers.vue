@@ -74,18 +74,18 @@
           <Upload
             :action="baseUrl+'/v1/upload/content'"
             name="file"
-            @on-success="uploadSuccessCert"
+            :on-success="uploadSuccessCert"
           >
             <Button icon="ios-cloud-upload-outline">Upload files</Button>
           </Upload>
         </FormItem>
         <FormItem label="key:" v-show="info.tls_enable == 'true'">
-          <Upload :action="baseUrl+'/v1/upload/content'" name="file" @on-success="uploadSuccessKey">
+          <Upload :action="baseUrl+'/v1/upload/content'" name="file" :on-success="uploadSuccessKey">
             <Button icon="ios-cloud-upload-outline">Upload files</Button>
           </Upload>
         </FormItem>
         <FormItem label="ca:" v-show="info.tls_enable == 'true'">
-          <Upload :action="baseUrl+'/v1/upload/content'" name="file" @on-success="uploadSuccessCa">
+          <Upload :action="baseUrl+'/v1/upload/content'" name="file" :on-success="uploadSuccessCa">
             <Button icon="ios-cloud-upload-outline">Upload files</Button>
           </Upload>
         </FormItem>
@@ -138,18 +138,18 @@
           <Upload
             :action="baseUrl+'/v1/upload/content'"
             name="file"
-            @on-success="uploadSuccessCert"
+            :on-success="uploadSuccessCert"
           >
             <Button icon="ios-cloud-upload-outline">Upload files</Button>
           </Upload>
         </FormItem>
         <FormItem label="key:" v-show="edit.tls_enable == 'true'">
-          <Upload :action="baseUrl+'/v1/upload/content'" name="file" @on-success="uploadSuccessKey">
+          <Upload :action="baseUrl+'/v1/upload/content'" name="file" :on-success="uploadSuccessKey">
             <Button icon="ios-cloud-upload-outline">Upload files</Button>
           </Upload>
         </FormItem>
         <FormItem label="ca:" v-show="edit.tls_enable == 'true'">
-          <Upload :action="baseUrl+'/v1/upload/content'" name="file" @on-success="uploadSuccessCa">
+          <Upload :action="baseUrl+'/v1/upload/content'" name="file" :on-success="uploadSuccessCa">
             <Button icon="ios-cloud-upload-outline">Upload files</Button>
           </Upload>
         </FormItem>
@@ -477,7 +477,12 @@ export default {
     // 权限确定
     roleOk(){
       console.log(this.roleList);
-      
+      SERVER.SetRoles(this.roleList).then(response => {
+        if (response.status == 200) {
+          this.modalRole = false
+          this.$Message.info("OK")
+        }
+      })
     }
 
   },
