@@ -64,7 +64,7 @@
         <FormItem label="Value" prop="value">
           <MonacoEditor
             class="editor"
-            height="450px"
+            height="65vh"
             width="100%"
             :codes="showKeyInfo.value"
             :editorOptions="codeOptions"
@@ -83,7 +83,7 @@
     <Drawer :transfer="true" :width="60" v-model="addKeyInfoModel" :title="$t('key.addKey')">
       <Form :model="addKeyInfo" :label-width="80">
         <FormItem label="Key" prop="key">
-          <Input v-model="addKeyInfo.key" placeholder="Key path, which can contain multiple'/'">
+          <Input v-model="addKeyInfo.key" :placeholder="$t('key.keyPlaceholder')">
             <span slot="prepend">{{fullDir}}</span>
           </Input>
         </FormItem>
@@ -91,7 +91,7 @@
           <FormItem label="Value" prop="value">
             <MonacoEditor
               class="editor"
-              height="450px"
+              height="65vh"
               width="100%"
               :codes="addKeyInfo.value"
               :editorOptions="codeOptions"

@@ -43,7 +43,8 @@ const lang = {
         keyNotEmpty:'key不能为空',
         addSuccessfully:'添加成功！',
         saveSuccessfully:'保存成功！',
-        showTree: '显示树形'
+        showTree: '显示树形',
+        keyPlaceholder: "key路径可以包含多个'/'"
     },
     logs:{
         date:'日期',

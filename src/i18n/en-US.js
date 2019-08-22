@@ -43,7 +43,8 @@ const lang = {
         keyNotEmpty:'Key can not be empty',
         addSuccessfully:'Added successfully!',
         saveSuccessfully:'Saved successfully!',
-        showTree: 'Show tree'
+        showTree: 'Show tree',
+        keyPlaceholder: "Key path, which can contain multiple'/'"
     },
     logs:{
         date:'Date',

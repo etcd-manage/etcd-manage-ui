@@ -45,7 +45,7 @@
         </FormItem>
         <FormItem label="地址:">
           <Poptip trigger="focus">
-            <Input v-model="info.address" placeholder="请输入地址，多个逗号分开..." style="width:388px" />
+            <Input v-model="info.address" type="textarea" placeholder="请输入地址，多个逗号分开..." style="width:388px" />
             <div slot="content">{{ info.address }}</div>
           </Poptip>
         </FormItem>
@@ -55,9 +55,9 @@
             <Option value="v2">V2</Option>
           </Select>
         </FormItem>
-        <FormItem label="前缀:">
+        <!-- <FormItem label="前缀:">
           <Input v-model="info.prefix" placeholder="请输入key前缀，建议不为空..." />
-        </FormItem>
+        </FormItem> -->
         <FormItem label="用户名:">
           <Input v-model="info.username" placeholder="请输入用户名..." />
         </FormItem>
@@ -119,9 +119,9 @@
             <Option value="v2">V2</Option>
           </Select>
         </FormItem>
-        <FormItem label="前缀:">
+        <!-- <FormItem label="前缀:">
           <Input v-model="edit.prefix" placeholder="请输入key前缀，建议不为空..." />
-        </FormItem>
+        </FormItem> -->
         <FormItem label="用户名:">
           <Input v-model="edit.username" placeholder="请输入用户名..." />
         </FormItem>
@@ -432,18 +432,20 @@ export default {
 
     // 第一个证书
     uploadSuccessCert(response, file, fileList) {
-      console.log(909090);
-      console.log(response, file, fileList);
+      this.info.cert_file = response.content
+      this.edit.cert_file = response.content
     },
 
     // 第二个证书
     uploadSuccessKey(response, file) {
-      console.log(response, file);
+      this.info.key_file = response.content
+      this.edit.key_file = response.content
     },
 
     // 第三个证书
     uploadSuccessCa(response, file) {
-      console.log(response, file);
+      this.info.ca_file = response.content
+      this.edit.ca_file = response.content
     },
 
     // 修改
