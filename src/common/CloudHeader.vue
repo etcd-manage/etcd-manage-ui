@@ -26,7 +26,7 @@
           <Icon type="ios-arrow-down"></Icon>
         </span>
         <DropdownMenu slot="list">
-          <DropdownItem>{{$t('header.personalCenter')}}</DropdownItem>
+          <!-- <DropdownItem>{{$t('header.personalCenter')}}</DropdownItem> -->
           <DropdownItem style="color: #ed4014" name="logout">{{$t('header.logout')}}</DropdownItem>
         </DropdownMenu>
       </Dropdown>
