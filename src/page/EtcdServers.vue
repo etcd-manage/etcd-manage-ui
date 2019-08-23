@@ -206,6 +206,14 @@ export default {
           key: "tls_enable"
         },
         {
+          title: "Created At",
+          key: "created_at"
+        },
+        {
+          title: "Updated At",
+          key: "updated_at"
+        },
+        {
           title: "Desc",
           key: "desc"
         },
@@ -280,7 +288,36 @@ export default {
                   }
                 },
                 this.$t("public.role")
-              )
+              ),
+              h(
+                "Poptip",
+                {
+                  props: {
+                    confirm: true,
+                    title: this.$t("public.confirmDelete")
+                  },
+                  on: {
+                    "on-ok": () => {
+                      this.delete(params.row);
+                    }
+                  }
+                },
+                [
+                  h(
+                    "Button",
+                    {
+                      props: {
+                        type: "error",
+                        size: "small"
+                      },
+                      style: {
+                        marginRight: "5px"
+                      }
+                    },
+                    this.$t("public.delete")
+                  )
+                ]
+              ),
             ]);
           }
         }
@@ -321,7 +358,7 @@ export default {
                     value: params.row.read,
                     'true-value': 1,
                     'false-value': 0,
-                    disabled: this.roleList[params.index].write == 1
+                    disabled: this.roleList[params.index].write == 1 || params.row.role_id == 1
                   },
                   style: {
                     marginRight: "5px"
@@ -360,7 +397,8 @@ export default {
                     size: "small",
                     value: params.row.write,
                     'true-value': 1,
-                    'false-value': 0
+                    'false-value': 0,
+                    disabled: params.row.role_id == 1
                   },
                   style: {
                     marginRight: "5px"
@@ -485,7 +523,16 @@ export default {
           this.$Message.info("OK")
         }
       })
-    }
+    },
+
+    // 删除
+    delete(row) {
+        SERVER.Del(row.id).then(response => {
+            if (response.status == 200) {
+                this.getList();
+            }
+        })
+    },
 
   },
   mounted() {

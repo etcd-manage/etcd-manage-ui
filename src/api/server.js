@@ -62,7 +62,15 @@ const SERVER = {
             return
         }
         return axios.post(`/v1/server/roles`, data);
-    }
+    },
+
+    /**
+     * 删除
+     * @param {*} id 
+     */
+    Del(id){
+        return axios.delete(`/v1/server?id=${id}`)
+    },
 
 
 }
