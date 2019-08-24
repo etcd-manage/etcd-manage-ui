@@ -40,6 +40,18 @@ const i18n = new VueI18n({
     messages  // set locale messages
 });
 
+// 判断字符串是否是以xx为前缀
+Vue.prototype.HasPrefix = (str, prefix) => {
+  console.log(str, prefix,str.substring(str.length - prefix.length));
+  
+  if(prefix == null || prefix == "" || str.length == 0 || prefix.length > str.length)
+     return false
+  if(str.substring(0, prefix.length) == prefix)
+     return true
+  else
+     return false
+}
+
 
 /* eslint-disable no-new */
 new Vue({

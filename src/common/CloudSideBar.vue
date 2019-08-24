@@ -125,7 +125,7 @@ export default {
     },
     // 菜单选中
     unfoldItemMenu(unfoldItem, unfoldItemIndex) {
-      console.log(unfoldItem);
+      // console.log(unfoldItem);
       if (this.unfoldItemMenuIndex == unfoldItemIndex) {
         this.unfoldItemMenuIndex = null;
       } else {

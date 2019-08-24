@@ -109,7 +109,7 @@
         </FormItem>
         <FormItem label="地址:">
           <Poptip trigger="focus">
-            <Input v-model="edit.address" placeholder="请输入地址，多个逗号分开..." style="width:388px" />
+            <Input v-model="edit.address" type="textarea" placeholder="请输入地址，多个逗号分开..." style="width:388px" />
             <div slot="content">{{ edit.address }}</div>
           </Poptip>
         </FormItem>

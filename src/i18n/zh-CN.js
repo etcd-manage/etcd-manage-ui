@@ -44,7 +44,8 @@ const lang = {
         addSuccessfully:'添加成功！',
         saveSuccessfully:'保存成功！',
         showTree: '显示树形',
-        keyPlaceholder: "key路径可以包含多个'/'"
+        keyPlaceholder: "key路径可以包含多个'/'",
+        keyNotPrefixBar: "key必须以 '/' 开头"
     },
     logs:{
         date:'日期',

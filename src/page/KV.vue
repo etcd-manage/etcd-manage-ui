@@ -139,7 +139,7 @@ export default {
           title: "parent",
           loading: false,
           children: [],
-          path: "/", // 默认前缀
+          path: "", // 默认前缀
           render: (h, { root, node, data }) => {
             return h(
               "span",
@@ -209,12 +209,13 @@ export default {
     bus.$off("etcd-server-selected");
     bus.$on("etcd-server-selected", item => {
       console.log(item);
-      this.getList();
+      this.getList('');
     });
   },
   methods: {
     // 获取 key 列表
     getList(dir) {
+      console.log("getList1", dir);
       if (typeof dir == "undefined") {
         dir = "/"; // todo 需要换成前缀
       }
@@ -223,6 +224,8 @@ export default {
       }else{
         this.fullDir = dir || this.fullDir;
       }
+      console.log("getList2", dir);
+      
       if (this.listType == "grid") {
         this.$refs.grid.getList(dir);
       } else if (this.listType == "list") {
@@ -323,7 +326,6 @@ export default {
       // console.log(val);
     },
 
-    // 添加事件
     // 添加key
     addKey() {
       if (
@@ -333,11 +335,12 @@ export default {
         this.$Message.warning(this.$t("key.keyNotEmpty"));
         return;
       }
-      console.log(this.addKeyInfo);
-
+      // console.log(this.addKeyInfo);
       let fullDir = this.fullDir;
-      if (fullDir != '/' && fullDir != '') {
-        fullDir += '/';
+      // key 必须以/开头除非父级为空
+      if (fullDir != '' && this.HasPrefix(this.addKeyInfo.key, "/") == false){
+        this.$Message.warning(this.$t("key.keyNotPrefixBar"));
+        return
       }
       // 请求参数
       let postData = {
@@ -370,6 +373,7 @@ export default {
     loadTreeData(item, callback) {
       // console.log(item)
       KV.GetKeyList(item.path).then(response => {
+        response.data = response.data || [];
         let list = [];
         response.data.forEach(val => {
           if (val.is_dir == true) {
