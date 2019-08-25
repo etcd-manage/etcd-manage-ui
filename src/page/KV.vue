@@ -64,7 +64,7 @@
         <FormItem label="Value" prop="value">
           <MonacoEditor
             class="editor"
-            height="65vh"
+            height="55vh"
             width="100%"
             :codes="showKeyInfo.value"
             :editorOptions="codeOptions"
@@ -91,7 +91,7 @@
           <FormItem label="Value" prop="value">
             <MonacoEditor
               class="editor"
-              height="65vh"
+              height="55vh"
               width="100%"
               :codes="addKeyInfo.value"
               :editorOptions="codeOptions"
