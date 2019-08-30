@@ -5,7 +5,7 @@ const DEV = {
 
 // 正式环境
 const PRO = {
-    BaseUrl: 'http://127.0.0.1:10280'
+    BaseUrl: ''
 }
 
 export const Config = process.env.NODE_ENV === 'development' ? DEV : PRO
