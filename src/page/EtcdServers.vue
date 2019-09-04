@@ -70,7 +70,7 @@
             <Option value="true">是</Option>
           </Select>
         </FormItem>
-        <FormItem label="cert:" v-show="info.tls_enable == 'true'">
+        <FormItem label="cert:" v-show="info.tls_enable == 'true' && info.version == 'v3'">
           <Upload
             :action="baseUrl+'/v1/upload/content'"
             name="file"
@@ -79,12 +79,12 @@
             <Button icon="ios-cloud-upload-outline">Upload files</Button>
           </Upload>
         </FormItem>
-        <FormItem label="key:" v-show="info.tls_enable == 'true'">
+        <FormItem label="key:" v-show="info.tls_enable == 'true' && info.version == 'v3'">
           <Upload :action="baseUrl+'/v1/upload/content'" name="file" :on-success="uploadSuccessKey">
             <Button icon="ios-cloud-upload-outline">Upload files</Button>
           </Upload>
         </FormItem>
-        <FormItem label="ca:" v-show="info.tls_enable == 'true'">
+        <FormItem label="ca:" v-show="info.tls_enable == 'true' && info.version == 'v3'">
           <Upload :action="baseUrl+'/v1/upload/content'" name="file" :on-success="uploadSuccessCa">
             <Button icon="ios-cloud-upload-outline">Upload files</Button>
           </Upload>
@@ -134,7 +134,7 @@
             <Option value="true">是</Option>
           </Select>
         </FormItem>
-        <FormItem label="cert:" v-show="edit.tls_enable == 'true'">
+        <FormItem label="cert:" v-show="edit.tls_enable == 'true' && info.version == 'v3'">
           <Upload
             :action="baseUrl+'/v1/upload/content'"
             name="file"
@@ -143,12 +143,12 @@
             <Button icon="ios-cloud-upload-outline">Upload files</Button>
           </Upload>
         </FormItem>
-        <FormItem label="key:" v-show="edit.tls_enable == 'true'">
+        <FormItem label="key:" v-show="edit.tls_enable == 'true' && info.version == 'v3'">
           <Upload :action="baseUrl+'/v1/upload/content'" name="file" :on-success="uploadSuccessKey">
             <Button icon="ios-cloud-upload-outline">Upload files</Button>
           </Upload>
         </FormItem>
-        <FormItem label="ca:" v-show="edit.tls_enable == 'true'">
+        <FormItem label="ca:" v-show="edit.tls_enable == 'true' && info.version == 'v3'">
           <Upload :action="baseUrl+'/v1/upload/content'" name="file" :on-success="uploadSuccessCa">
             <Button icon="ios-cloud-upload-outline">Upload files</Button>
           </Upload>
