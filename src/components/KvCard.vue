@@ -18,7 +18,7 @@
               </div>
               </Col>
               <Col span="20" class="centre">
-                <Tooltip placement="top" max-width="500" transfer>
+                <Tooltip placement="bottom" max-width="500" transfer>
                   <div class="path">{{ item.path }}</div>
                   <div class="value">{{item.value}}</div>
                   <div slot="content">

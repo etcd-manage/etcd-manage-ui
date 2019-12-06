@@ -71,7 +71,7 @@ export default {
             return h("div", [
               h('Tooltip', {
                 props: {
-                  placement: 'top',
+                  placement: 'bottom',
                   'max-width': 500,
                   content: params.row.value
                 }
